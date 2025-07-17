@@ -28,7 +28,7 @@ defmodule Q3BspCauldron.Router do
   end
 
   defp serve_pk3_file(conn, pk3_file) do
-    baseq3_path = System.get_env("QUAKE3_BASEQ3_PATH") || "/opt/quake3/baseq3"
+    baseq3_path = Application.fetch_env!(:q3_bsp_cauldron, :baseq3_path)
     file_path = Path.join(baseq3_path, pk3_file)
 
     case File.stat(file_path) do

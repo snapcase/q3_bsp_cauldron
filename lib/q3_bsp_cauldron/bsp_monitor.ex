@@ -29,9 +29,7 @@ defmodule Q3BspCauldron.BSPMonitor do
 
   @impl true
   def init(_opts) do
-    baseq3_path =
-      System.get_env("QUAKE3_BASEQ3_PATH") ||
-        raise "QUAKE3_BASEQ3_PATH environment variable is required"
+    baseq3_path = Application.fetch_env!(:q3_bsp_cauldron, :baseq3_path)
 
     # Create or reuse existing ETS table
     table =

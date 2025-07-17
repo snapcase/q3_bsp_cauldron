@@ -7,9 +7,11 @@ defmodule Q3BspCauldron.Application do
 
   @impl true
   def start(_type, _args) do
+    port = Application.fetch_env!(:q3_bsp_cauldron, :port)
+
     children = [
       Q3BspCauldron.BSPMonitor,
-      {Plug.Cowboy, scheme: :http, plug: Q3BspCauldron.Router, options: [port: 4000]}
+      {Plug.Cowboy, scheme: :http, plug: Q3BspCauldron.Router, options: [port: port]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
