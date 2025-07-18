@@ -20,6 +20,16 @@ defmodule Q3BspCauldron.Router do
     end
   end
 
+  # Health check endpoint for Docker
+  get "/health" do
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(
+      200,
+      ~s({"status": "ok", "maps": #{length(Q3BspCauldron.BSPMonitor.list_all_bsps())}})
+    )
+  end
+
   # catch-all for unmatched routes
   match _ do
     conn

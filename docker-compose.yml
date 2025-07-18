@@ -1,0 +1,15 @@
+services:
+  q3-bsp-cauldron:
+    build: .
+    container_name: q3-bsp-cauldron
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./data/baseq3:/app/data/baseq3:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
