@@ -2,8 +2,6 @@ defmodule Q3BspCauldron.Router do
   use Plug.Router
   require Logger
 
-  @template_dir "lib/q3_bsp_cauldron/templates"
-
   plug(:match)
   plug(:dispatch)
 
@@ -11,9 +9,11 @@ defmodule Q3BspCauldron.Router do
     files = Q3BspCauldron.BSPMonitor.list_all_bsps()
     sorted_files = files |> Enum.map(fn {bsp, _pk3} -> bsp end) |> Enum.sort()
 
+    html = Q3BspCauldron.Templates.file_listing(%{files: sorted_files})
+
     conn
     |> put_resp_content_type("text/html")
-    |> render("file_listing.html.eex", files: sorted_files)
+    |> send_resp(200, html)
   end
 
   get "/dl/:mapname" do
@@ -67,15 +67,5 @@ defmodule Q3BspCauldron.Router do
         |> put_resp_content_type("text/plain")
         |> send_resp(500, "Internal server error")
     end
-  end
-
-  defp render(conn, template, assigns) do
-    body =
-      @template_dir
-      |> Path.join(template)
-      |> String.replace_suffix(".html", ".html.eex")
-      |> EEx.eval_file(assigns)
-
-    send_resp(conn, conn.status || 200, body)
   end
 end
