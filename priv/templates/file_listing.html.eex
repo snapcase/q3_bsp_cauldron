@@ -60,7 +60,7 @@
         <% map_name = Path.rootname(file) %>
         <tr>
           <td>
-            <a href="/dl/<%= map_name %>" download class="bsp-link">
+            <a href="dl/<%= map_name %>" download class="bsp-link">
               <%= map_name %>
             </a>
           </td>
